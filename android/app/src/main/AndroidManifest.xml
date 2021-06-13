@@ -2,7 +2,8 @@
     package="com.covid.vaxxcard.smart_vaxx_card_client">
    <application
         android:label="smart_vaxx_card_client"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true" >
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
