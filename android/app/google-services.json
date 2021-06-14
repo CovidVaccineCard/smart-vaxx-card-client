@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "422616208444",
+    "project_id": "smart-vaxx-card",
+    "storage_bucket": "smart-vaxx-card.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422616208444:android:1c4d7e83cdf0ce01671f39",
+        "android_client_info": {
+          "package_name": "com.covid.vaxxcard.smart_vaxx_card_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422616208444-aprgfgck17v7kl6afvkg5nnbg2692qd7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.covid.vaxxcard.smart_vaxx_card_client",
+            "certificate_hash": "6673d070537ad65e736122f49a02ed5669dde3e8"
+          }
+        },
+        {
+          "client_id": "422616208444-d119mbn1371ub0lsegbupaqlmnhbh0ca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbn54SDk5CjxkW4VJb5F2L7t9DtqzbL8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422616208444-d119mbn1371ub0lsegbupaqlmnhbh0ca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
