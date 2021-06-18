@@ -1,12 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'center/main.dart';
-import 'view_card/main.dart';
-import 'add_card/main.dart';
-import 'auth/main.dart';
-import 'home/main.dart';
-import 'info/error.dart';
-import 'info/loading.dart';
+import 'screens/center/main.dart';
+import 'screens/view_card/main.dart';
+import 'screens/add_card/main.dart';
+import 'screens/auth/main.dart';
+import 'screens/home/main.dart';
+import 'screens/info/error.dart';
+import 'screens/info/loading.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,13 @@ class SmartVaxxCardApp extends StatelessWidget {
 
         if (snapshot.hasData) {
           return MaterialApp(
+            title: 'Covid',
+            theme: ThemeData(
+              primaryColor: Color(0xFF2661FA),
+              accentColor: Color(0xFF2661FA),
+              scaffoldBackgroundColor: Colors.white,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
             initialRoute: "/",
             routes: {
               "/": (ctx) => HomeScreen(),
