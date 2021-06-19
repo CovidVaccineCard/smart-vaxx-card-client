@@ -1,0 +1,78 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:smart_vaxx_card_client/screens/home/main.dart';
+import 'package:smart_vaxx_card_client/screens/info/loading.dart';
+
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selected = 0;
+  List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    Text("UploadForm"),
+    Text("Info"),
+    Text("VacinationCenter"),
+    Text("Account"),
+  ];
+
+  bool checkLoggedIn() {
+    User? user = FirebaseAuth.instance.currentUser;
+    return user != null;
+  }
+
+  void _onItemTap(int index) {
+    setState(() {
+      this._selected = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if (!checkLoggedIn()) {
+        Navigator.popAndPushNamed(context, "/auth");
+      }
+    });
+    return !checkLoggedIn()
+        ? LoadingScreen()
+        : Scaffold(
+            body: Center(
+              child: _widgetOptions.elementAt(_selected),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: "Home",
+                  backgroundColor: Colors.blueAccent,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add),
+                  label: "Upload",
+                  backgroundColor: Colors.blueAccent,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.folder_shared),
+                  label: "Card",
+                  backgroundColor: Colors.blueAccent,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.near_me_sharp),
+                  label: "Center",
+                  backgroundColor: Colors.blueAccent,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: "Account",
+                  backgroundColor: Colors.blueAccent,
+                ),
+              ],
+              currentIndex: _selected,
+              onTap: _onItemTap,
+            ),
+          );
+  }
+}

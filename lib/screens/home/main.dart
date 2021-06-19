@@ -1,33 +1,82 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_vaxx_card_client/screens/info/loading.dart';
+import 'package:smart_vaxx_card_client/constants.dart';
+import 'package:smart_vaxx_card_client/screens/home/global.dart';
+import 'package:smart_vaxx_card_client/screens/nav_option/main.dart';
 
-class HomeScreen extends StatelessWidget {
-  bool checkLoggedIn() {
-    User? user = FirebaseAuth.instance.currentUser;
-    return user != null;
-  }
+enum NavigationStatus {
+  GLOBAL,
+  COUNTRY,
+}
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  NavigationStatus navigationStatus = NavigationStatus.GLOBAL;
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (!checkLoggedIn()) {
-        Navigator.popAndPushNamed(context, "/auth");
-      }
-    });
-    return !checkLoggedIn()
-        ? LoadingScreen()
-        : Scaffold(
-            body: Center(
-              child: GestureDetector(
-                child: Text("Home"),
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, "/auth");
-                },
+    Size size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kPrimaryColor,
+        elevation: 0,
+        title: Text(
+          "COVID-19 Tracker Live Data",
+        ),
+        centerTitle: true,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(50),
+                    bottomLeft: Radius.circular(50),
+                  )),
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 250),
+                child: navigationStatus == NavigationStatus.GLOBAL
+                    ? Global()
+                    : Text("Country"),
               ),
             ),
-          );
+          ),
+          Container(
+            height: size.height * 0.1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                NavigationOption(
+                  title: "Global",
+                  selected: navigationStatus == NavigationStatus.GLOBAL,
+                  onSelected: () {
+                    setState(() {
+                      navigationStatus = NavigationStatus.GLOBAL;
+                    });
+                  },
+                ),
+                NavigationOption(
+                  title: "Country",
+                  selected: navigationStatus == NavigationStatus.COUNTRY,
+                  onSelected: () {
+                    setState(() {
+                      navigationStatus = NavigationStatus.COUNTRY;
+                    });
+                  },
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
