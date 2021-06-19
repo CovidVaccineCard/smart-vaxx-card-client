@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_vaxx_card_client/constants.dart';
+import 'package:smart_vaxx_card_client/screens/home/country.dart';
 import 'package:smart_vaxx_card_client/screens/home/global.dart';
 import 'package:smart_vaxx_card_client/screens/nav_option/main.dart';
 
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 duration: Duration(milliseconds: 250),
                 child: navigationStatus == NavigationStatus.GLOBAL
                     ? Global()
-                    : Text("Country"),
+                    : Country(),
               ),
             ),
           ),

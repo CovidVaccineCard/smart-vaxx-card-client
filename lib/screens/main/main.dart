@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_vaxx_card_client/screens/account/main.dart';
 import 'package:smart_vaxx_card_client/screens/home/main.dart';
 import 'package:smart_vaxx_card_client/screens/info/loading.dart';
 
@@ -15,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
     Text("UploadForm"),
     Text("Info"),
     Text("VacinationCenter"),
-    Text("Account"),
+    AccountScreen(),
   ];
 
   bool checkLoggedIn() {
