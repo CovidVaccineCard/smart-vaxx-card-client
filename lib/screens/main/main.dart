@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_vaxx_card_client/screens/account/main.dart';
 import 'package:smart_vaxx_card_client/screens/home/main.dart';
 import 'package:smart_vaxx_card_client/screens/info/loading.dart';
+import 'package:smart_vaxx_card_client/screens/upload_form/main.dart';
 import 'package:smart_vaxx_card_client/screens/vaccination_center/main.dart';
 import 'package:smart_vaxx_card_client/screens/vaxx_cards/main.dart';
 
@@ -15,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   int _selected = 0;
   List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Text("UploadForm"),
+    UploadFormScreen(),
     VaxxCardScreen(),
     VaccinationCenterScreen(),
     AccountScreen(),
