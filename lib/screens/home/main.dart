@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        brightness: Brightness.dark,
         elevation: 0,
         title: Text(
           "COVID-19 Tracker Live Data",

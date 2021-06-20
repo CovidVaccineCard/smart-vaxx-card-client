@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:smart_vaxx_card_client/constants.dart';
 import 'package:smart_vaxx_card_client/screens/account/main.dart';
 import 'package:smart_vaxx_card_client/screens/home/main.dart';
 import 'package:smart_vaxx_card_client/screens/info/loading.dart';
@@ -49,29 +51,29 @@ class _MainScreenState extends State<MainScreen> {
             bottomNavigationBar: BottomNavigationBar(
               items: [
                 BottomNavigationBarItem(
+                  backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.home),
                   label: "Home",
-                  backgroundColor: Colors.blueAccent,
                 ),
                 BottomNavigationBarItem(
+                  backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.add),
                   label: "Upload",
-                  backgroundColor: Colors.blueAccent,
                 ),
                 BottomNavigationBarItem(
+                  backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.folder_shared),
                   label: "Card",
-                  backgroundColor: Colors.blueAccent,
                 ),
                 BottomNavigationBarItem(
+                  backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.near_me_sharp),
                   label: "Center",
-                  backgroundColor: Colors.blueAccent,
                 ),
                 BottomNavigationBarItem(
+                  backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.person),
                   label: "Account",
-                  backgroundColor: Colors.blueAccent,
                 ),
               ],
               currentIndex: _selected,

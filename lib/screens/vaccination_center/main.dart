@@ -10,8 +10,8 @@ class VaccinationCenterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.dark,
         title: Text('Vaccine Card'),
-        backgroundColor: Colors.blueAccent,
       ),
       body: ListView.builder(
         itemCount: items.length,

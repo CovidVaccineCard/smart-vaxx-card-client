@@ -159,8 +159,8 @@ class UploadFormScreenState extends State<UploadFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.dark,
         title: Text("Add card"),
-        backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
         child: Container(

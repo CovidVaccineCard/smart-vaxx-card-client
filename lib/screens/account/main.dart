@@ -27,8 +27,8 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.dark,
         title: Text("Account"),
-        backgroundColor: Colors.blueAccent,
       ),
       body: getListView(context),
     );

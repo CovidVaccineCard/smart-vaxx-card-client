@@ -1,14 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'screens/center/main.dart';
-import 'screens/view_card/main.dart';
-import 'screens/add_card/main.dart';
+import 'package:flutter/services.dart';
+import 'constants.dart';
 import 'screens/auth/main.dart';
 import 'screens/main/main.dart';
 import 'screens/info/error.dart';
 import 'screens/info/loading.dart';
 
 void main() {
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark
+  //     .copyWith(statusBarIconBrightness: Brightness.dark));
   WidgetsFlutterBinding.ensureInitialized();
   runApp(SmartVaxxCardApp());
 }
@@ -26,10 +27,11 @@ class SmartVaxxCardApp extends StatelessWidget {
 
         if (snapshot.hasData) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Covid',
             theme: ThemeData(
-              primaryColor: Color(0xFF2661FA),
-              accentColor: Color(0xFF2661FA),
+              primaryColor: kPrimaryColor,
+              accentColor: kPrimaryColor,
               scaffoldBackgroundColor: Colors.white,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
@@ -37,9 +39,6 @@ class SmartVaxxCardApp extends StatelessWidget {
             routes: {
               "/": (ctx) => MainScreen(),
               "/auth": (ctx) => AuthScreen(),
-              "/centers/:centerId": (ctx) => CenterScreen(),
-              "/card/add": (ctx) => AddCardScreen(),
-              "/card/view/:cardId": (ctx) => ViewCardScreen(),
             },
           );
         }
