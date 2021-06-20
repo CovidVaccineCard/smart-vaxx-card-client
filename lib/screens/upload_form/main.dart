@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_vaxx_card_client/models/card_details.dart';
-import 'package:smart_vaxx_card_client/screens/displayImage/main.dart';
+import 'package:smart_vaxx_card_client/screens/display_image/main.dart';
 
 enum UploadState {
   IDLE,
@@ -219,6 +219,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
 
                               final id = widget.cards.doc().id;
                               _cardDetails = CardDetails(
+                                imageName: fileName,
                                 name: name,
                                 center: center,
                                 date: date!,
@@ -236,6 +237,18 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                                 _image = null;
                               });
                               _formKey.currentState?.reset();
+                              _nameController.text = "";
+                              _centerController.text = "";
+                              _doseController.text = "";
+                              _date = null;
+                              _locationController.text = "";
+                              ScaffoldMessenger.of(context).clearSnackBars();
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("Uploaded"),
+                                action: SnackBarAction(
+                                    label: 'Dismiss', onPressed: () {}),
+                              ));
                             } on FirebaseException catch (e) {
                               setState(() {
                                 _uploadState = UploadState.FAILED;

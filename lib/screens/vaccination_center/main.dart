@@ -1,153 +1,152 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_vaxx_card_client/models/center_details.dart';
 import 'package:smart_vaxx_card_client/screens/card/painter.dart';
+import 'package:smart_vaxx_card_client/utils.dart';
 
 class VaccinationCenterScreen extends StatelessWidget {
   final double _borderRadius = 24;
-
-  var items = [];
-
+  final centers = FirebaseFirestore.instance.collection("centers");
+  final userId = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
-        title: Text('Vaccine Card'),
+        title: Text('Vaccination centers'),
       ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-              child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(_borderRadius),
-                      gradient: LinearGradient(colors: [
-                        items[index].startColor,
-                        items[index].endColor
-                      ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                      boxShadow: [
-                        BoxShadow(
-                          color: items[index].endColor,
-                          blurRadius: 12,
-                          offset: Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    top: 0,
-                    child: CustomPaint(
-                      size: Size(100, 150),
-                      painter: CustomCardShapePainter(_borderRadius,
-                          items[index].startColor, items[index].endColor),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Image.asset(
-                            'images/vaccine-icon.png',
-                            height: 64,
-                            width: 64,
-                          ),
-                          flex: 2,
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: centers.snapshots(),
+        builder: (ctx, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Oops! something went wrong'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData && snapshot.data!.size == 0) {
+            return Center(child: Text('No Centers available right now!!!'));
+          }
+          if (snapshot.hasData) {
+            final list = snapshot.data!.docs
+                .map((q) => CenterDetails.fromMap(q.data()))
+                .toList();
+            return ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                final color = getColor(index);
+                final startColor = color['start']!;
+                final endColor = color['end']!;
+                final centerDetails = list[index];
+                return Material(
+                  child: InkWell(
+                      onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (ctx) =>
+                        //         ViewCardScreen(cardDetails: cardDetails),
+                        //   ),
+                        // );
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Stack(
                             children: <Widget>[
-                              Text(
-                                items[index].name,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Avenir',
-                                    fontWeight: FontWeight.w700),
+                              Container(
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(_borderRadius),
+                                  gradient: LinearGradient(
+                                      colors: [startColor, endColor],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: endColor,
+                                      blurRadius: 12,
+                                      offset: Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(height: 16),
-                              Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.location_on,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      items[index].location,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Avenir',
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                top: 0,
+                                child: CustomPaint(
+                                  size: Size(100, 150),
+                                  painter: CustomCardShapePainter(
+                                      _borderRadius, startColor, endColor),
+                                ),
+                              ),
+                              Positioned.fill(
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Image.asset(
+                                        'images/vaccine-icon.png',
+                                        height: 64,
+                                        width: 64,
+                                      ),
+                                      flex: 2,
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            centerDetails.name,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Avenir',
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          SizedBox(height: 16),
+                                          Row(
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.location_on,
+                                                color: Colors.white,
+                                                size: 16,
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  centerDetails.place,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'Avenir',
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                                items[index].days.toString(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Avenir',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ));
+                      )),
+                );
+              },
+            );
+          }
+          return Center(child: CircularProgressIndicator());
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   child: Icon(Icons.search),
-      // ),
     );
   }
-
-//   createAlertDialog(BuildContext context) {
-//     TextEditingController searchElementController = TextEditingController();
-//     return showDialog(
-//         context: context,
-//         builder: (context) {
-//           return AlertDialog(
-//             title: Text("Search City"),
-//             content: TextFormField(
-//               controller: searchElementController,
-//             ),
-//             actions: <Widget>[
-//               MaterialButton(
-//                 onPressed: () {},
-//                 elevation: 5.0,
-//                 child: Text("Submit"),
-//               )
-//             ],
-//           );
-//         });
-//   }
 }

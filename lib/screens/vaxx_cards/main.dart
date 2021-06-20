@@ -17,16 +17,19 @@ class VaxxCardScreen extends StatelessWidget {
         brightness: Brightness.dark,
         title: Text('Vaccine Card'),
       ),
-      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        future: cards.where("userId", isEqualTo: userId).get(),
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: cards.where("userId", isEqualTo: userId).snapshots(),
         builder: (ctx, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Oops! something went wrong'));
           }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
           if (snapshot.hasData && snapshot.data!.size == 0) {
             return Center(child: Text('No cards on the cloud'));
           }
-          if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
             final list = snapshot.data!.docs
                 .map((q) => CardDetails.fromMap(q.data()))
                 .toList();

@@ -5,6 +5,7 @@ class CardDetails {
   final String dose;
   final String location;
   final String image;
+  final String imageName;
   final String userId;
   final String id;
 
@@ -15,6 +16,7 @@ class CardDetails {
     required this.dose,
     required this.location,
     required this.image,
+    required this.imageName,
     required this.userId,
     required this.id,
   });
@@ -29,6 +31,7 @@ class CardDetails {
       dose: mapData['dose'],
       location: mapData['location'],
       image: mapData['image'],
+      imageName: mapData['imageName'],
     );
   }
 
@@ -42,6 +45,7 @@ class CardDetails {
       'dose': dose,
       'location': location,
       'image': image,
+      'imageName': imageName,
     };
   }
 }
