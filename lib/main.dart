@@ -35,10 +35,10 @@ class SmartVaxxCardApp extends StatelessWidget {
               scaffoldBackgroundColor: Colors.white,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            initialRoute: "/",
+            initialRoute: '/',
             routes: {
-              "/": (ctx) => MainScreen(),
-              "/auth": (ctx) => AuthScreen(),
+              '/': (ctx) => MainScreen(),
+              '/auth': (ctx) => AuthScreen(),
             },
           );
         }
