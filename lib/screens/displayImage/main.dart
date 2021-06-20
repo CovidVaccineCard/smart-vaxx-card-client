@@ -14,7 +14,7 @@ class DisplayImage extends StatelessWidget {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile != null) {
       File tmpImage = File(pickedFile.path);
-      _cropImage(tmpImage);
+      await _cropImage(tmpImage);
     } else {
       print('No image selected.');
     }
@@ -25,7 +25,7 @@ class DisplayImage extends StatelessWidget {
 
     if (pickedFile != null) {
       File tmpImage = File(pickedFile.path);
-      _cropImage(tmpImage);
+      await _cropImage(tmpImage);
     } else {
       print('No image selected.');
     }
@@ -83,6 +83,7 @@ class DisplayImage extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
+            isDismissible: true,
             context: context,
             builder: (ctx) {
               return SizedBox(
@@ -93,14 +94,16 @@ class DisplayImage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: () {
-                          getImageCamera();
+                        onTap: () async {
+                          await getImageCamera();
+                          Navigator.pop(ctx);
                         },
                         child: _buildOption(Icons.camera, 'camera'),
                       ),
                       InkWell(
-                        onTap: () {
-                          getImageGallery();
+                        onTap: () async {
+                          await getImageGallery();
+                          Navigator.pop(ctx);
                         },
                         child: _buildOption(Icons.photo, 'gallery'),
                       ),

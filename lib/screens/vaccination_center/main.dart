@@ -1,42 +1,11 @@
 import 'package:flutter/material.dart';
-
-import 'package:smart_vaxx_card_client/models/place_info.dart';
 import 'package:smart_vaxx_card_client/screens/card/painter.dart';
 
 class VaccinationCenterScreen extends StatelessWidget {
   final double _borderRadius = 24;
 
-  var items = [
-    PlaceInfo(
-      'Hospital 1',
-      Color(0xff6DC8F3),
-      Color(0xff73A1F9),
-      500,
-      'cbe',
-    ),
-    PlaceInfo(
-      'hospital 2',
-      Color(0xffFFB157),
-      Color(0xffFFA057),
-      100,
-      'Cbe',
-    ),
-    PlaceInfo(
-      'hosital 4',
-      Color(0xffFF5B95),
-      Color(0xffF8556D),
-      1000,
-      'Coimbatore',
-    ),
-    PlaceInfo(
-      'MMMMM',
-      Color(0xffD76EF5),
-      Color(0xff8F7AFE),
-      122,
-      'mmm',
-    ),
-    PlaceInfo('xxxxx', Color(0xff42E695), Color(0xff3BB2B8), 66, 'xxxx'),
-  ];
+  var items = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,12 +17,6 @@ class VaccinationCenterScreen extends StatelessWidget {
         itemCount: items.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-              // onTap: () {
-              //   setState(() {
-              //     int sno = index;
-              //     navigate(sno);
-              //   });
-              // },
               child: Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),

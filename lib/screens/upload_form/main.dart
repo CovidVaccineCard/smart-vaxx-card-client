@@ -1,15 +1,23 @@
-import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:smart_vaxx_card_client/models/card_details.dart';
 import 'package:smart_vaxx_card_client/screens/displayImage/main.dart';
 
-class UploadFormScreen extends StatefulWidget {
-  // UploadForm({Key? key, this.title}) : super(key: key);
+enum UploadState {
+  IDLE,
+  UPLOADING,
+  SUCCESS,
+  FAILED,
+}
 
-  // final String title;
+class UploadFormScreen extends StatefulWidget {
+  final storage = FirebaseStorage.instance;
+  final cards = FirebaseFirestore.instance.collection("cards");
   @override
   State<StatefulWidget> createState() => UploadFormScreenState();
 }
@@ -17,13 +25,53 @@ class UploadFormScreen extends StatefulWidget {
 class UploadFormScreenState extends State<UploadFormScreen> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _centerController = TextEditingController();
-  TextEditingController _dateController = TextEditingController();
   TextEditingController _doseController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
+  String? _date;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   File? _image;
+  late UploadState _uploadState;
+  CardDetails? _cardDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    _uploadState = UploadState.IDLE;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _centerController.dispose();
+    _doseController.dispose();
+    _locationController.dispose();
+    super.dispose();
+  }
+
+  bool validateFields() {
+    final name = _nameController.text;
+    final center = _centerController.text;
+    final date = _date;
+    final dose = _doseController.text;
+    final location = _locationController.text;
+    return name.isNotEmpty &&
+        center.isNotEmpty &&
+        date != null &&
+        date.isNotEmpty &&
+        dose.isNotEmpty &&
+        location.isNotEmpty &&
+        _image != null;
+  }
+
+  final snackBar = SnackBar(
+    content: Text("Please fill all required fields"),
+    action: SnackBarAction(
+      label: 'Dismiss',
+      onPressed: () {},
+    ),
+  );
 
   Widget _buildUpload() {
     return Center(
@@ -38,77 +86,73 @@ class UploadFormScreenState extends State<UploadFormScreen> {
     );
   }
 
-  Widget _buildName() {
-    return TextFormField(
-      controller: _nameController,
-      decoration: InputDecoration(labelText: 'Name'),
-      maxLength: 10,
-      validator: (var value) {
-        if (value!.isEmpty) {
-          return 'Name is Required';
-        }
-
-        return null;
-      },
+  Widget _buildInput(String label, TextEditingController controller) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+        ),
+      ),
     );
+  }
+
+  Widget _buildName() {
+    return _buildInput('Name', _nameController);
   }
 
   Widget _buildCenter() {
-    return TextFormField(
-      controller: _centerController,
-      decoration: InputDecoration(labelText: 'Center of Vaccination'),
-      validator: (var value) {
-        if (value!.isEmpty) {
-          return 'Center of Vaccination is Required';
-        }
-
-        return null;
-      },
-    );
+    return _buildInput('Center of Vaccination', _centerController);
   }
 
   Widget _buildlocation() {
-    return TextFormField(
-      controller: _locationController,
-      decoration: InputDecoration(labelText: 'Location of Center'),
-      validator: (var value) {
-        if (value!.isEmpty) {
-          return 'Location of Center';
-        }
-
-        return null;
-      },
-    );
+    return _buildInput('Location of Center', _locationController);
   }
 
   Widget _buildDate() {
-    return TextFormField(
-      controller: _dateController,
-      decoration: InputDecoration(labelText: 'Date'),
-      keyboardType: TextInputType.datetime,
-      validator: (var value) {
-        if (value!.isEmpty) {
-          return 'date is Required';
-        }
-
-        return null;
-      },
+    final date = _date;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () async {
+          final newDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime(2100),
+          );
+          if (newDate == null) return;
+          setState(() {
+            _date = newDate.toString().substring(0, 10);
+          });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: Colors.transparent,
+              border: Border.all(
+                width: 1,
+                color: Colors.grey,
+              )),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+          margin: EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            'Date: ' + (date != null ? date : 'Not selected'),
+            style: TextStyle(
+              backgroundColor: Colors.transparent,
+              fontSize: 16.0,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildDose() {
-    return TextFormField(
-      controller: _doseController,
-      decoration: InputDecoration(labelText: 'Dose'),
-      keyboardType: TextInputType.number,
-      validator: (var value) {
-        if (value!.isEmpty) {
-          return 'Dose  number is Required';
-        }
-
-        return null;
-      },
-    );
+    return _buildInput('Dose', _doseController);
   }
 
   @override
@@ -128,32 +172,89 @@ class UploadFormScreenState extends State<UploadFormScreen> {
               children: <Widget>[
                 _buildName(),
                 _buildCenter(),
-                _buildDate(),
                 _buildDose(),
                 _buildlocation(),
-
+                _buildDate(),
                 SizedBox(height: 20),
                 _buildUpload(),
                 SizedBox(height: 30),
-                // ignore: deprecated_member_use
-                RaisedButton(
-                  child: Text(
-                    'Upload',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                  onPressed: () {
-                    if (!_formKey.currentState!.validate()) {
-                      return;
-                    }
+                _uploadState == UploadState.UPLOADING
+                    ? CircularProgressIndicator()
+                    : ElevatedButton(
+                        child: Text(
+                          'Upload',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        onPressed: () async {
+                          if (validateFields()) {
+                            _formKey.currentState!.save();
+                            setState(() {
+                              _uploadState = UploadState.UPLOADING;
+                            });
 
-                    _formKey.currentState!.save();
+                            final name = _nameController.text;
+                            final center = _centerController.text;
+                            final date = _date;
+                            final dose = _doseController.text;
+                            final location = _locationController.text;
+                            final dateTime =
+                                '${DateTime.now().millisecondsSinceEpoch}';
+                            final randomNum = '${Random().nextInt(200)}';
+                            final uId =
+                                '${FirebaseAuth.instance.currentUser!.uid}';
+                            final fileName = '$uId-$dateTime-$randomNum.jpg';
+                            try {
+                              await widget.storage
+                                  .ref("cards/$uId/$fileName")
+                                  .putFile(
+                                      _image!,
+                                      SettableMetadata(
+                                        customMetadata: {
+                                          'userId': uId,
+                                        },
+                                      ));
+                              final image = await widget.storage
+                                  .ref("cards/$uId/$fileName")
+                                  .getDownloadURL();
 
-                    //Send to API
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(30))),
-                  color: Colors.blue,
-                ),
+                              final id = widget.cards.doc().id;
+                              _cardDetails = CardDetails(
+                                name: name,
+                                center: center,
+                                date: date!,
+                                dose: dose,
+                                location: location,
+                                image: image,
+                                userId: uId,
+                                id: id,
+                              );
+                              await widget.cards
+                                  .doc(id)
+                                  .set(_cardDetails!.toMap());
+                              setState(() {
+                                _uploadState = UploadState.SUCCESS;
+                                _image = null;
+                              });
+                              _formKey.currentState?.reset();
+                            } on FirebaseException catch (e) {
+                              setState(() {
+                                _uploadState = UploadState.FAILED;
+                              });
+                              ScaffoldMessenger.of(context).clearSnackBars();
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(e.code),
+                                action: SnackBarAction(
+                                    label: 'Dismiss', onPressed: () {}),
+                              ));
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).clearSnackBars();
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
+                        },
+                      ),
               ],
             ),
           ),
