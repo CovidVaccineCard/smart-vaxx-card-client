@@ -6,7 +6,7 @@ import 'package:smart_vaxx_card_client/screens/view_card/view_image.dart';
 
 class ViewCardScreen extends StatelessWidget {
   final CardDetails cardDetails;
-  final cards = FirebaseFirestore.instance.collection("cards");
+  final cards = FirebaseFirestore.instance.collection('cards');
   final storage = FirebaseStorage.instance;
   final height = 200.0, width = 300.0;
   ViewCardScreen({required this.cardDetails});
@@ -91,7 +91,7 @@ class ViewCardScreen extends StatelessWidget {
             onPressed: () async {
               await cards.doc(cardDetails.id).delete();
               await storage
-                  .ref("cards/${cardDetails.userId}/${cardDetails.imageName}")
+                  .ref('cards/${cardDetails.userId}/${cardDetails.imageName}')
                   .delete();
               Navigator.pop(context);
             },

@@ -5,6 +5,8 @@ import 'package:smart_vaxx_card_client/models/center_details.dart';
 import 'package:smart_vaxx_card_client/screens/card/painter.dart';
 import 'package:smart_vaxx_card_client/utils.dart';
 
+import 'maps.dart';
+
 class VaccinationCenterScreen extends StatelessWidget {
   final double _borderRadius = 24;
   final centers = FirebaseFirestore.instance.collection("centers");
@@ -42,13 +44,15 @@ class VaccinationCenterScreen extends StatelessWidget {
                 return Material(
                   child: InkWell(
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (ctx) =>
-                        //         ViewCardScreen(cardDetails: cardDetails),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => MapsScreen(
+                              point: centerDetails.location,
+                              name: centerDetails.name,
+                            ),
+                          ),
+                        );
                       },
                       child: Center(
                         child: Padding(
