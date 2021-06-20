@@ -5,11 +5,14 @@ import 'package:smart_vaxx_card_client/constants.dart';
 import 'otp_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  final TextEditingController _phNoController = TextEditingController();
+  final TextEditingController phNoController;
   final Function(String) loginHandler;
   final LoginState loginState;
 
-  LoginScreen({required this.loginState, required this.loginHandler});
+  LoginScreen(
+      {required this.loginState,
+      required this.loginHandler,
+      required this.phNoController});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class LoginScreen extends StatelessWidget {
           FadeAnimation(
             1.2,
             Text(
-              "Login",
+              'Login',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 40,
@@ -44,12 +47,12 @@ class LoginScreen extends StatelessWidget {
                     // color: Colors.transparent,
                     child: TextFormField(
                       keyboardType: TextInputType.phone,
-                      controller: _phNoController,
+                      controller: phNoController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "Phone number",
+                        hintText: 'Phone number',
                       ),
                     ),
                   ),
@@ -75,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                             color: Colors.blue[800]),
                         child: Center(
                           child: Text(
-                            "Login",
+                            'Login',
                             style: TextStyle(
                                 color: Colors.white.withOpacity(.7),
                                 fontSize: 20),
@@ -91,7 +94,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _auth(BuildContext context) {
-    String phoneNumber = _phNoController.text.trim();
+    String phoneNumber = phNoController.text.trim();
     if (phoneNumber.isNotEmpty && phoneNumber.length == 10) {
       loginHandler(phoneNumber);
     }

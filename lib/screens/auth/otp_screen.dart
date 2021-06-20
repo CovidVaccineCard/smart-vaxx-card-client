@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:smart_vaxx_card_client/constants.dart';
 
 class OTP extends StatelessWidget {
-  final TextEditingController otpController = TextEditingController();
+  final TextEditingController otpController;
   final Function(String) otpHandler;
   final LoginState loginState;
 
-  OTP({required this.loginState, required this.otpHandler});
+  OTP(
+      {required this.loginState,
+      required this.otpHandler,
+      required this.otpController});
 
   @override
   Widget build(BuildContext context) {
