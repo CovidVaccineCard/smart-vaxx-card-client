@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1680972548/android.cloud_firestore.iml" filepath="$PROJECT_DIR$/.idea/modules/-1680972548/android.cloud_firestore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1214646331/android.firebase_auth.iml" filepath="$PROJECT_DIR$/.idea/modules/1214646331/android.firebase_auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-206603216/android.firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/-206603216/android.firebase_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1560245320/android.firebase_storage.iml" filepath="$PROJECT_DIR$/.idea/modules/1560245320/android.firebase_storage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/812069475/android.flutter_keyboard_visibility.iml" filepath="$PROJECT_DIR$/.idea/modules/812069475/android.flutter_keyboard_visibility.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1824657678/android.flutter_plugin_android_lifecycle.iml" filepath="$PROJECT_DIR$/.idea/modules/1824657678/android.flutter_plugin_android_lifecycle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1862847337/android.google_maps_flutter.iml" filepath="$PROJECT_DIR$/.idea/modules/-1862847337/android.google_maps_flutter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2053187139/android.image_cropper.iml" filepath="$PROJECT_DIR$/.idea/modules/2053187139/android.image_cropper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2042080869/android.image_picker.iml" filepath="$PROJECT_DIR$/.idea/modules/-2042080869/android.image_picker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/871815012/android.path_provider.iml" filepath="$PROJECT_DIR$/.idea/modules/871815012/android.path_provider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/436335418/android.share_plus.iml" filepath="$PROJECT_DIR$/.idea/modules/436335418/android.share_plus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-274285579/android.url_launcher.iml" filepath="$PROJECT_DIR$/.idea/modules/-274285579/android.url_launcher.iml" />
+    </modules>
+  </component>
+</project>

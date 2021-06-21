@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.covid.vaxxcard.smart_vaxx_card_client">
    <application
-        android:label="smart_vaxx_card_client"
+        android:label="Smart Vaxx Card"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true" >
 
