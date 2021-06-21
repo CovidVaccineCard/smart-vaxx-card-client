@@ -4,6 +4,9 @@
         android:label="smart_vaxx_card_client"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true" >
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCpYU2O-M0PxszNNkGmreNA0JyPO0_4Wa0"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -38,5 +41,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <activity
+          android:name="com.yalantis.ucrop.UCropActivity"
+          android:screenOrientation="portrait"
+          android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 </manifest>
