@@ -10,7 +10,7 @@ class AccountScreen extends StatelessWidget {
           title: Text("Logout"),
           onTap: () async {
             await FirebaseAuth.instance.signOut();
-            Navigator.pushNamed(context, "/auth");
+            await Navigator.pushNamed(context, "/auth");
             Navigator.pop(context);
           },
         ),
