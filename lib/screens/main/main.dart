@@ -16,13 +16,20 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selected = 0;
-  List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    UploadFormScreen(),
-    VaxxCardScreen(),
-    VaccinationCenterScreen(),
-    AccountScreen(),
-  ];
+  List<Widget>? _widgetOptions;
+
+  List<Widget> getWidgets() {
+    var widgetOptions = _widgetOptions ??
+        <Widget>[
+          HomeScreen(),
+          UploadFormScreen(),
+          VaxxCardScreen(),
+          VaccinationCenterScreen(),
+          AccountScreen(),
+        ];
+    _widgetOptions = widgetOptions;
+    return widgetOptions;
+  }
 
   bool checkLoggedIn() {
     var user = FirebaseAuth.instance.currentUser;
@@ -31,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void _onItemTap(int index) {
     setState(() {
-      this._selected = index;
+      _selected = index;
     });
   }
 
@@ -39,41 +46,41 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (!checkLoggedIn()) {
-        Navigator.popAndPushNamed(context, "/auth");
+        Navigator.popAndPushNamed(context, '/auth');
       }
     });
     return !checkLoggedIn()
         ? LoadingScreen()
         : Scaffold(
             body: Center(
-              child: _widgetOptions.elementAt(_selected),
+              child: getWidgets().elementAt(_selected),
             ),
             bottomNavigationBar: BottomNavigationBar(
               items: [
                 BottomNavigationBarItem(
                   backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.home),
-                  label: "Home",
+                  label: 'Home',
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.add),
-                  label: "Upload",
+                  label: 'Upload',
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.folder_shared),
-                  label: "Card",
+                  label: 'Card',
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.near_me_sharp),
-                  label: "Center",
+                  label: 'Center',
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: kPrimaryColor,
                   icon: Icon(Icons.person),
-                  label: "Account",
+                  label: 'Account',
                 ),
               ],
               currentIndex: _selected,

@@ -8,6 +8,8 @@ import 'walk_through.dart';
 import 'package:smart_vaxx_card_client/screens/info/loading.dart';
 
 class AuthScreen extends StatefulWidget {
+  final phNoController = TextEditingController();
+  final otpController = TextEditingController();
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -15,7 +17,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   late AuthState _authState;
   late LoginState _loginState;
-  String _verificationId = "";
+  String _verificationId = '';
 
   @override
   void initState() {
@@ -25,7 +27,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   bool checkLoggedIn() {
-    User? user = FirebaseAuth.instance.currentUser;
+    var user = FirebaseAuth.instance.currentUser;
     return user != null;
   }
 
@@ -39,13 +41,14 @@ class _AuthScreenState extends State<AuthScreen> {
         });
       case AuthState.LOGIN:
         return LoginScreen(
+          phNoController: widget.phNoController,
           loginState: _loginState,
           loginHandler: (String data) {
             setState(() {
               _loginState = LoginState.PENDING;
             });
             FirebaseAuth.instance.verifyPhoneNumber(
-              phoneNumber: "+91" + data,
+              phoneNumber: '+91' + data,
               verificationFailed: (e) {
                 setState(() {
                   _loginState = LoginState.FAILED;
@@ -64,6 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
         );
       case AuthState.OTP:
         return OTP(
+            otpController: widget.otpController,
             loginState: _loginState,
             otpHandler: (String data) {
               if (_verificationId.trim().isNotEmpty) {
@@ -92,7 +96,7 @@ class _AuthScreenState extends State<AuthScreen> {
     final double width = MediaQuery.of(context).size.width;
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (checkLoggedIn()) {
-        Navigator.popAndPushNamed(context, "/");
+        Navigator.popAndPushNamed(context, '/');
       }
     });
     if (checkLoggedIn()) return LoadingScreen();
@@ -127,7 +131,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   height: 400,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("images/one.png"), fit: BoxFit.cover),
+                        image: AssetImage('images/one.png'), fit: BoxFit.cover),
                   ),
                 ),
               ),

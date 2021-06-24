@@ -8,7 +8,7 @@ import 'package:smart_vaxx_card_client/utils.dart';
 
 class VaxxCardScreen extends StatelessWidget {
   final double _borderRadius = 24;
-  final cards = FirebaseFirestore.instance.collection("cards");
+  final cards = FirebaseFirestore.instance.collection('cards');
   final userId = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class VaxxCardScreen extends StatelessWidget {
         title: Text('Vaccine Card'),
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: cards.where("userId", isEqualTo: userId).snapshots(),
+        stream: cards.where('userId', isEqualTo: userId).snapshots(),
         builder: (ctx, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Oops! something went wrong'));
@@ -26,7 +26,8 @@ class VaxxCardScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-          if (snapshot.hasData && snapshot.data!.size == 0) {
+          if (snapshot.hasData &&
+              (snapshot.data == null || snapshot.data?.size == 0)) {
             return Center(child: Text('No cards on the cloud'));
           }
           if (snapshot.hasData) {
