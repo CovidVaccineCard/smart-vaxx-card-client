@@ -25,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   bool checkLoggedIn() {
-    User? user = FirebaseAuth.instance.currentUser;
+    var user = FirebaseAuth.instance.currentUser;
     return user != null;
   }
 

@@ -11,6 +11,7 @@ class AccountScreen extends StatelessWidget {
           onTap: () async {
             await FirebaseAuth.instance.signOut();
             Navigator.pushNamed(context, "/auth");
+            Navigator.pop(context);
           },
         ),
         ListTile(
