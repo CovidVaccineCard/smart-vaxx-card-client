@@ -116,7 +116,7 @@ class LoginScreen extends StatelessWidget {
 
   void _auth(BuildContext context) {
     var phoneNumber = phNoController.text.trim();
-    if (phoneNumber.isNotEmpty && phoneNumber.length == 10) {
+    if (phoneNumber.isNotEmpty) {
       loginHandler(phoneNumber);
     }
   }
