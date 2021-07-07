@@ -18,6 +18,7 @@ class _AuthScreenState extends State<AuthScreen> {
   late AuthState _authState;
   late LoginState _loginState;
   String _verificationId = '';
+  String _dialCode = '+91';
 
   @override
   void initState() {
@@ -42,13 +43,20 @@ class _AuthScreenState extends State<AuthScreen> {
       case AuthState.LOGIN:
         return LoginScreen(
           phNoController: widget.phNoController,
+          dialCode: _dialCode,
+          dialCodeHandler: (String dialCode) {
+            setState(() {
+              _dialCode = dialCode;
+            });
+          },
           loginState: _loginState,
           loginHandler: (String data) {
             setState(() {
               _loginState = LoginState.PENDING;
             });
+            debugPrint(_dialCode + data);
             FirebaseAuth.instance.verifyPhoneNumber(
-              phoneNumber: '+91' + data,
+              phoneNumber: _dialCode + data,
               verificationFailed: (e) {
                 setState(() {
                   _loginState = LoginState.FAILED;

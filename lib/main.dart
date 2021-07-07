@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart';
@@ -24,6 +25,10 @@ class SmartVaxxCardApp extends StatelessWidget {
 
         if (snapshot.hasData) {
           return MaterialApp(
+            supportedLocales: [Locale('en')],
+            localizationsDelegates: [
+              CountryLocalizations.delegate,
+            ],
             debugShowCheckedModeBanner: false,
             title: 'Covid',
             theme: ThemeData(
