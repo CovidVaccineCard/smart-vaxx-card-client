@@ -8,24 +8,23 @@ import '../models/country.dart';
 class CovidService {
   Future<GlobalSummaryModel> getGlobalSummary() async {
     final data = await http.Client()
-        .get(Uri.parse("https://api.covid19api.com/summary"));
+        .get(Uri.parse('https://api.covid19api.com/summary'));
 
     if (data.statusCode != 200) throw Exception();
 
-    GlobalSummaryModel summary =
-        new GlobalSummaryModel.fromJson(json.decode(data.body));
+    var summary = GlobalSummaryModel.fromJson(json.decode(data.body));
 
     return summary;
   }
 
   Future<List<CountrySummaryModel>> getCountrySummary(String slug) async {
     final data = await http.Client().get(
-        Uri.parse("https://api.covid19api.com/total/dayone/country/" + slug));
+        Uri.parse('https://api.covid19api.com/total/dayone/country/' + slug));
 
     if (data.statusCode != 200) throw Exception();
 
-    List<CountrySummaryModel> summaryList = (json.decode(data.body) as List)
-        .map((item) => new CountrySummaryModel.fromJson(item))
+    var summaryList = (json.decode(data.body) as List)
+        .map((item) => CountrySummaryModel.fromJson(item))
         .toList();
 
     return summaryList;
@@ -33,12 +32,12 @@ class CovidService {
 
   Future<List<CountryModel>> getCountryList() async {
     final data = await http.Client()
-        .get(Uri.parse("https://api.covid19api.com/countries"));
+        .get(Uri.parse('https://api.covid19api.com/countries'));
 
     if (data.statusCode != 200) throw Exception();
 
-    List<CountryModel> countries = (json.decode(data.body) as List)
-        .map((item) => new CountryModel.fromJson(item))
+    var countries = (json.decode(data.body) as List)
+        .map((item) => CountryModel.fromJson(item))
         .toList();
 
     return countries;

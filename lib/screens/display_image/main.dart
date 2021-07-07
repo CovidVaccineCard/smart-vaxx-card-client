@@ -5,6 +5,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DisplayImage extends StatelessWidget {
+  DisplayImage({required this.image, required this.onImageChange});
+
   final File? image;
   final Function(File? file) onImageChange;
   final double height = 150, width = 150;
@@ -13,7 +15,7 @@ class DisplayImage extends StatelessWidget {
   Future getImageCamera() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile != null) {
-      File tmpImage = File(pickedFile.path);
+      var tmpImage = File(pickedFile.path);
       await _cropImage(tmpImage);
     } else {
       print('No image selected.');
@@ -24,7 +26,7 @@ class DisplayImage extends StatelessWidget {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      File tmpImage = File(pickedFile.path);
+      var tmpImage = File(pickedFile.path);
       await _cropImage(tmpImage);
     } else {
       print('No image selected.');
@@ -33,7 +35,7 @@ class DisplayImage extends StatelessWidget {
 
   Future<void> _cropImage(File? image) async {
     if (image != null) {
-      File? cropped = await ImageCropper.cropImage(
+      var cropped = await ImageCropper.cropImage(
         sourcePath: image.path,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
@@ -55,8 +57,6 @@ class DisplayImage extends StatelessWidget {
       onImageChange(cropped ?? image);
     }
   }
-
-  DisplayImage({required this.image, required this.onImageChange});
 
   Widget _buildOption(IconData iconData, String text) {
     return Padding(

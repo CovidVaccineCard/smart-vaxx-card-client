@@ -15,20 +15,20 @@ class VaxxCardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
-        title: Text('Vaccine Card'),
+        title: const Text('Vaccine Card'),
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: cards.where('userId', isEqualTo: userId).snapshots(),
         builder: (ctx, snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text('Oops! something went wrong'));
+            return Center(child: const Text('Oops! something went wrong'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasData &&
               (snapshot.data == null || snapshot.data?.size == 0)) {
-            return Center(child: Text('No cards on the cloud'));
+            return Center(child: const Text('No cards on the cloud'));
           }
           if (snapshot.hasData) {
             final list = snapshot.data!.docs
@@ -89,12 +89,12 @@ class VaxxCardScreen extends StatelessWidget {
                                 child: Row(
                                   children: <Widget>[
                                     Expanded(
+                                      flex: 2,
                                       child: Image.asset(
                                         'images/vaccine-icon.png',
                                         height: 64,
                                         width: 64,
                                       ),
-                                      flex: 2,
                                     ),
                                     Expanded(
                                       flex: 4,

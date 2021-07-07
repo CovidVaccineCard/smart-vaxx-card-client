@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapsScreen extends StatefulWidget {
+  const MapsScreen({required this.point, required this.name});
+
   final GeoPoint point;
   final String name;
-
-  const MapsScreen({required this.point, required this.name});
 
   @override
   _MapsScreenState createState() => _MapsScreenState();

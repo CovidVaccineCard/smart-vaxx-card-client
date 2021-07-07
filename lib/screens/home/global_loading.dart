@@ -20,7 +20,7 @@ class GlobalLoading extends StatelessWidget {
       elevation: 1,
       child: Container(
         height: 100,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Shimmer.fromColors(
           baseColor: Colors.grey,
           highlightColor: Colors.grey,
@@ -56,7 +56,7 @@ class GlobalLoading extends StatelessWidget {
 
   Widget loadingLabel() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: Shimmer.fromColors(
         baseColor: Colors.blue,
         highlightColor: Colors.blue,

@@ -5,11 +5,12 @@ import 'package:smart_vaxx_card_client/models/card_details.dart';
 import 'package:smart_vaxx_card_client/screens/view_card/view_image.dart';
 
 class ViewCardScreen extends StatelessWidget {
+  ViewCardScreen({required this.cardDetails});
+
   final CardDetails cardDetails;
   final cards = FirebaseFirestore.instance.collection('cards');
   final storage = FirebaseStorage.instance;
   final height = 200.0, width = 300.0;
-  ViewCardScreen({required this.cardDetails});
 
   Widget _buildDetails(String label, String value) {
     return Padding(
@@ -19,7 +20,7 @@ class ViewCardScreen extends StatelessWidget {
           Text(label,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           SizedBox(width: 10),
-          Expanded(child: Text(value, style: TextStyle(fontSize: 20)), flex: 1),
+          Expanded(flex: 1, child: Text(value, style: TextStyle(fontSize: 20))),
         ],
       ),
     );
@@ -53,7 +54,7 @@ class ViewCardScreen extends StatelessWidget {
                         ? child
                         : Center(child: CircularProgressIndicator()),
                 errorBuilder: (context, error, stackTrace) =>
-                    Center(child: Text('Failed')),
+                    Center(child: const Text('Failed')),
                 height: height,
                 width: width,
                 fit: BoxFit.cover,
@@ -68,7 +69,7 @@ class ViewCardScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   color: Colors.black,
                   child: Center(
-                    child: Text('View',
+                    child: const Text('View',
                         style: TextStyle(color: Colors.white, fontSize: 22)),
                   ),
                 ),
@@ -103,7 +104,7 @@ class ViewCardScreen extends StatelessWidget {
           },
           icon: Icon(Icons.close),
         ),
-        title: Text('View card'),
+        title: const Text('View card'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -111,7 +112,6 @@ class ViewCardScreen extends StatelessWidget {
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildImage(context),
               _buildDetails('Name: ', cardDetails.name),

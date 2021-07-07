@@ -19,14 +19,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
         elevation: 0,
         title: Text(
-          "COVID-19 Tracker Live Data",
+          'COVID-19 Tracker Live Data',
         ),
         centerTitle: true,
       ),
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 NavigationOption(
-                  title: "Global",
+                  title: 'Global',
                   selected: navigationStatus == NavigationStatus.GLOBAL,
                   onSelected: () {
                     setState(() {
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 NavigationOption(
-                  title: "Country",
+                  title: 'Country',
                   selected: navigationStatus == NavigationStatus.COUNTRY,
                   onSelected: () {
                     setState(() {

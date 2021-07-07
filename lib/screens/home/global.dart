@@ -28,12 +28,12 @@ class _GlobalState extends State<Global> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  "Global Corona Virus Cases",
+                const Text(
+                  'Global Corona Virus Cases',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -64,17 +64,18 @@ class _GlobalState extends State<Global> {
           FutureBuilder(
             future: summary,
             builder: (context, AsyncSnapshot<GlobalSummaryModel> snapshot) {
-              if (snapshot.hasError)
+              if (snapshot.hasError) {
                 return Center(
-                  child: Text("Error"),
+                  child: const Text('Error'),
                 );
+              }
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
                   return GlobalLoading();
                 default:
                   return !snapshot.hasData
                       ? Center(
-                          child: Text("Empty"),
+                          child: const Text('Empty'),
                         )
                       : GlobalStatistics(
                           summary: snapshot.data!,

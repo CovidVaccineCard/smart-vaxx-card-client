@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:smart_vaxx_card_client/anim/fade_animation.dart';
 
-import 'login_screen.dart';
-
 class WalkThrough extends StatefulWidget {
-  final Function nextHandler;
+  const WalkThrough({required this.nextHandler});
 
-  WalkThrough({required this.nextHandler});
+  final Function nextHandler;
 
   @override
   _WalkThroughState createState() => _WalkThroughState();
@@ -29,7 +26,6 @@ class _WalkThroughState extends State<WalkThrough>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _scaleController =
@@ -83,15 +79,15 @@ class _WalkThroughState extends State<WalkThrough>
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           FadeAnimation(
               1,
-              Text(
-                "Welcome",
+              const Text(
+                'Welcome',
                 style: TextStyle(color: Colors.white, fontSize: 50),
               )),
           SizedBox(
@@ -121,7 +117,7 @@ class _WalkThroughState extends State<WalkThrough>
                         builder: (context, child) => Container(
                           width: _widthAnimation.value,
                           height: 80,
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
                               color: Colors.blue.withOpacity(.4)),

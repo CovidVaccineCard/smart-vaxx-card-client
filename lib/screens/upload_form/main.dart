@@ -17,16 +17,16 @@ enum UploadState {
 
 class UploadFormScreen extends StatefulWidget {
   final storage = FirebaseStorage.instance;
-  final cards = FirebaseFirestore.instance.collection("cards");
+  final cards = FirebaseFirestore.instance.collection('cards');
   @override
   State<StatefulWidget> createState() => UploadFormScreenState();
 }
 
 class UploadFormScreenState extends State<UploadFormScreen> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _centerController = TextEditingController();
-  TextEditingController _doseController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _centerController = TextEditingController();
+  final TextEditingController _doseController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
   String? _date;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -66,7 +66,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
   }
 
   final snackBar = SnackBar(
-    content: Text("Please fill all required fields"),
+    content: Text('Please fill all required fields'),
     action: SnackBarAction(
       label: 'Dismiss',
       onPressed: () {},
@@ -140,7 +140,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
           margin: EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
-            'Date: ' + (date != null ? date : 'Not selected'),
+            'Date: ' + (date ?? 'Not selected'),
             style: TextStyle(
               backgroundColor: Colors.transparent,
               fontSize: 16.0,
@@ -160,7 +160,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
-        title: Text("Add card"),
+        title: const Text('Add card'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -181,10 +181,6 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                 _uploadState == UploadState.UPLOADING
                     ? CircularProgressIndicator()
                     : ElevatedButton(
-                        child: Text(
-                          'Upload',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
                         onPressed: () async {
                           if (validateFields()) {
                             _formKey.currentState!.save();
@@ -205,7 +201,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                             final fileName = '$uId-$dateTime-$randomNum.jpg';
                             try {
                               await widget.storage
-                                  .ref("cards/$uId/$fileName")
+                                  .ref('cards/$uId/$fileName')
                                   .putFile(
                                       _image!,
                                       SettableMetadata(
@@ -214,7 +210,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                                         },
                                       ));
                               final image = await widget.storage
-                                  .ref("cards/$uId/$fileName")
+                                  .ref('cards/$uId/$fileName')
                                   .getDownloadURL();
 
                               final id = widget.cards.doc().id;
@@ -237,15 +233,15 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                                 _image = null;
                               });
                               _formKey.currentState?.reset();
-                              _nameController.text = "";
-                              _centerController.text = "";
-                              _doseController.text = "";
+                              _nameController.text = '';
+                              _centerController.text = '';
+                              _doseController.text = '';
                               _date = null;
-                              _locationController.text = "";
+                              _locationController.text = '';
                               ScaffoldMessenger.of(context).clearSnackBars();
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
-                                content: Text("Uploaded"),
+                                content: const Text('Uploaded'),
                                 action: SnackBarAction(
                                     label: 'Dismiss', onPressed: () {}),
                               ));
@@ -267,6 +263,10 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                                 .showSnackBar(snackBar);
                           }
                         },
+                        child: const Text(
+                          'Upload',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
               ],
             ),

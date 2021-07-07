@@ -4,11 +4,12 @@ import 'package:simple_animations/simple_animations.dart';
 enum AnimationType { opacity, translateX }
 
 class FadeAnimation extends StatelessWidget {
+  const FadeAnimation(this.delay, this.child);
+
   final double delay;
   final Widget child;
 
-  const FadeAnimation(this.delay, this.child);
-
+  @override
   Widget build(BuildContext context) {
     final tween = MultiTween<AnimationType>()
       ..add(
@@ -26,7 +27,6 @@ class FadeAnimation extends StatelessWidget {
       delay: Duration(milliseconds: (500 * delay).round()),
       duration: tween.duration,
       tween: tween,
-      child: child,
       builder: (context, child, value) => Opacity(
         opacity: value.get(AnimationType.opacity),
         child: Transform.translate(
@@ -34,6 +34,7 @@ class FadeAnimation extends StatelessWidget {
           child: child,
         ),
       ),
+      child: child,
     );
   }
 }

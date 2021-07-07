@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:smart_vaxx_card_client/anim/fade_animation.dart';
 import 'package:smart_vaxx_card_client/constants.dart';
-import 'otp_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  final TextEditingController phNoController;
-  final Function(String) loginHandler;
-  final LoginState loginState;
-
-  LoginScreen(
+  const LoginScreen(
       {required this.loginState,
       required this.loginHandler,
       required this.phNoController});
 
+  final TextEditingController phNoController;
+  final Function(String) loginHandler;
+  final LoginState loginState;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(30),
+      padding: const EdgeInsets.all(30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FadeAnimation(
             1.2,
-            Text(
+            const Text(
               'Login',
               style: TextStyle(
                 color: Colors.white,
@@ -38,7 +36,7 @@ class LoginScreen extends StatelessWidget {
           FadeAnimation(
             1.5,
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10), color: Colors.white),
               child: Column(
@@ -72,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                       onTap: () => _auth(context),
                       child: Container(
                         width: 120,
-                        padding: EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
                             color: Colors.blue[800]),
@@ -94,7 +92,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _auth(BuildContext context) {
-    String phoneNumber = phNoController.text.trim();
+    var phoneNumber = phNoController.text.trim();
     if (phoneNumber.isNotEmpty && phoneNumber.length == 10) {
       loginHandler(phoneNumber);
     }

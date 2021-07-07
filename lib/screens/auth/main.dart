@@ -93,7 +93,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (checkLoggedIn()) {
         Navigator.popAndPushNamed(context, '/');

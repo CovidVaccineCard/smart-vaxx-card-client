@@ -4,30 +4,30 @@ import 'package:smart_vaxx_card_client/models/global_summary.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class GlobalStatistics extends StatelessWidget {
-  final GlobalSummaryModel summary;
-
   GlobalStatistics({required this.summary});
+
+  final GlobalSummaryModel summary;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        buildCard("CONFIRMED", summary.totalConfirmed, summary.newConfirmed,
+        buildCard('CONFIRMED', summary.totalConfirmed, summary.newConfirmed,
             kConfirmedColor),
         buildCard(
-            "ACTIVE",
+            'ACTIVE',
             summary.totalConfirmed -
                 summary.totalRecovered -
                 summary.totalDeaths,
             summary.newConfirmed - summary.newRecovered - summary.newDeaths,
             kActiveColor),
-        buildCard("RECOVERED", summary.totalRecovered, summary.newRecovered,
+        buildCard('RECOVERED', summary.totalRecovered, summary.newRecovered,
             kRecoveredColor),
-        buildCard("DEATH", summary.totalDeaths, summary.newDeaths, kDeathColor),
+        buildCard('DEATH', summary.totalDeaths, summary.newDeaths, kDeathColor),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
           child: Text(
-            "Statistics updated " + timeago.format(summary.date),
+            'Statistics updated ' + timeago.format(summary.date),
             // "k",
             style: TextStyle(
               color: Colors.white,
@@ -45,7 +45,7 @@ class GlobalStatistics extends StatelessWidget {
       elevation: 1,
       child: Container(
         height: 100,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: <Widget>[
             Text(
@@ -66,7 +66,7 @@ class GlobalStatistics extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Total",
+                      'Total',
                       style: TextStyle(
                         color: color,
                         fontWeight: FontWeight.bold,
@@ -87,7 +87,7 @@ class GlobalStatistics extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      "Today",
+                      'Today',
                       style: TextStyle(
                         color: color,
                         fontWeight: FontWeight.bold,

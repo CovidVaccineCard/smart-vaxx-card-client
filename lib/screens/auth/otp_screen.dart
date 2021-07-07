@@ -1,30 +1,29 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_vaxx_card_client/anim/fade_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_vaxx_card_client/constants.dart';
 
 class OTP extends StatelessWidget {
-  final TextEditingController otpController;
-  final Function(String) otpHandler;
-  final LoginState loginState;
-
-  OTP(
+  const OTP(
       {required this.loginState,
       required this.otpHandler,
       required this.otpController});
 
+  final TextEditingController otpController;
+  final Function(String) otpHandler;
+  final LoginState loginState;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(30),
+      padding: const EdgeInsets.all(30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FadeAnimation(
             1.2,
-            Text(
-              "OTP Verification",
+            const Text(
+              'OTP Verification',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 40,
@@ -38,7 +37,7 @@ class OTP extends StatelessWidget {
           FadeAnimation(
             1.5,
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
@@ -55,7 +54,7 @@ class OTP extends StatelessWidget {
                         border: InputBorder.none,
                         hintStyle:
                             TextStyle(color: Colors.grey.withOpacity(.8)),
-                        hintText: "OTP",
+                        hintText: 'OTP',
                       ),
                     ),
                   ),
@@ -73,13 +72,13 @@ class OTP extends StatelessWidget {
                 onTap: () => _auth(context),
                 child: Container(
                   width: 120,
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       color: Colors.blue[800]),
                   child: Center(
                     child: Text(
-                      "Verify",
+                      'Verify',
                       style: TextStyle(color: Colors.white.withOpacity(.7)),
                     ),
                   ),

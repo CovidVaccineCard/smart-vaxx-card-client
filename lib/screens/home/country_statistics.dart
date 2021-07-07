@@ -3,26 +3,27 @@ import 'package:smart_vaxx_card_client/constants.dart';
 import 'package:smart_vaxx_card_client/models/country_summary.dart';
 
 class CountryStatistics extends StatelessWidget {
+  const CountryStatistics({required this.summaryList});
+
   final List<CountrySummaryModel> summaryList;
-  CountryStatistics({required this.summaryList});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         buildCard(
-          "CONFIRMED",
+          'CONFIRMED',
           summaryList[summaryList.length - 1].confirmed,
           kConfirmedColor,
-          "ACTIVE",
+          'ACTIVE',
           summaryList[summaryList.length - 1].active,
           kActiveColor,
         ),
         buildCard(
-          "RECOVERED",
+          'RECOVERED',
           summaryList[summaryList.length - 1].recovered,
           kRecoveredColor,
-          "DEATH",
+          'DEATH',
           summaryList[summaryList.length - 1].death,
           kDeathColor,
         ),
@@ -55,7 +56,7 @@ class CountryStatistics extends StatelessWidget {
                   child: Container(),
                 ),
                 Text(
-                  "Total",
+                  'Total',
                   style: TextStyle(
                     color: leftColor,
                     fontWeight: FontWeight.bold,
@@ -87,7 +88,7 @@ class CountryStatistics extends StatelessWidget {
                   child: Container(),
                 ),
                 Text(
-                  "Total",
+                  'Total',
                   style: TextStyle(
                     color: rightColor,
                     fontWeight: FontWeight.bold,

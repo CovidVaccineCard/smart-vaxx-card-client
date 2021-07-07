@@ -7,21 +7,21 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ViewImageScreen extends StatelessWidget {
-  final String image, imageName, userId;
-
   const ViewImageScreen({
     required this.image,
     required this.imageName,
     required this.userId,
   });
 
+  final String image, imageName, userId;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Directory appDocDir = await getApplicationDocumentsDirectory();
-          File downloadToFile = File('${appDocDir.path}/$imageName');
+          var appDocDir = await getApplicationDocumentsDirectory();
+          var downloadToFile = File('${appDocDir.path}/$imageName');
 
           try {
             if (!downloadToFile.existsSync()) {
@@ -29,7 +29,7 @@ class ViewImageScreen extends StatelessWidget {
                   .ref('cards/$userId/$imageName')
                   .writeToFile(downloadToFile);
             }
-            Share.shareFiles(['${appDocDir.path}/$imageName']);
+            await Share.shareFiles(['${appDocDir.path}/$imageName']);
           } on FirebaseException catch (e) {
             debugPrint(e.stackTrace.toString());
           }
@@ -47,7 +47,7 @@ class ViewImageScreen extends StatelessWidget {
                     ? child
                     : Center(child: CircularProgressIndicator()),
             errorBuilder: (context, error, stackTrace) =>
-                Center(child: Text('Failed')),
+                Center(child: const Text('Failed')),
             fit: BoxFit.contain,
           ),
         ),

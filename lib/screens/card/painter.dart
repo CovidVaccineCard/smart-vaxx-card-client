@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 class CustomCardShapePainter extends CustomPainter {
+  const CustomCardShapePainter(this.radius, this.startColor, this.endColor);
+
   final double radius;
   final Color startColor;
   final Color endColor;
-
-  CustomCardShapePainter(this.radius, this.startColor, this.endColor);
 
   @override
   void paint(Canvas canvas, Size size) {

@@ -20,17 +20,17 @@ class _CountryState extends State<Country> {
   late Future<List<CountrySummaryModel>> summaryList;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
 
     countryList = covidService.getCountryList();
 
-    this._typeAheadController.text = "United States of America";
-    summaryList = covidService.getCountrySummary("united-states");
+    _typeAheadController.text = 'United States of America';
+    summaryList = covidService.getCountrySummary('united-states');
   }
 
   List<String> _getSuggestions(List<CountryModel>? list, String query) {
-    List<String> matches = [];
+    var matches = <String>[];
 
     for (var item in list ?? []) {
       matches.add(item.country);
@@ -47,27 +47,28 @@ class _CountryState extends State<Country> {
         FutureBuilder(
           future: countryList,
           builder: (context, AsyncSnapshot<List<CountryModel>> snapshot) {
-            if (snapshot.hasError)
+            if (snapshot.hasError) {
               return Center(
-                child: Text("Error"),
+                child: const Text('Error'),
               );
+            }
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return CountryLoading(inputTextLoading: true);
               default:
                 return !snapshot.hasData
                     ? Center(
-                        child: Text("Empty"),
+                        child: const Text('Empty'),
                       )
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 4, vertical: 6),
-                            child: Text(
-                              "Type the country name",
+                            child: const Text(
+                              'Type the country name',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -77,7 +78,7 @@ class _CountryState extends State<Country> {
                           ),
                           TypeAheadFormField(
                             textFieldConfiguration: TextFieldConfiguration(
-                              controller: this._typeAheadController,
+                              controller: _typeAheadController,
                               decoration: InputDecoration(
                                 hintText: 'Type here country name',
                                 hintStyle: TextStyle(fontSize: 16),
@@ -90,10 +91,10 @@ class _CountryState extends State<Country> {
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey[200],
-                                contentPadding: EdgeInsets.all(20),
+                                contentPadding: const EdgeInsets.all(20),
                                 prefixIcon: Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 24.0, right: 16.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 24.0, right: 16.0),
                                   child: Icon(
                                     Icons.search,
                                     color: Colors.black,
@@ -115,8 +116,7 @@ class _CountryState extends State<Country> {
                               return suggestionsBox;
                             },
                             onSuggestionSelected: (suggestion) {
-                              this._typeAheadController.text =
-                                  suggestion.toString();
+                              _typeAheadController.text = suggestion.toString();
                               setState(() {
                                 summaryList = covidService.getCountrySummary(
                                     snapshot.data!
@@ -134,10 +134,11 @@ class _CountryState extends State<Country> {
                             builder: (context,
                                 AsyncSnapshot<List<CountrySummaryModel>>
                                     snapshot) {
-                              if (snapshot.hasError)
+                              if (snapshot.hasError) {
                                 return Center(
-                                  child: Text("Error"),
+                                  child: const Text('Error'),
                                 );
+                              }
                               switch (snapshot.connectionState) {
                                 case ConnectionState.waiting:
                                   return CountryLoading(
@@ -145,7 +146,7 @@ class _CountryState extends State<Country> {
                                 default:
                                   return !snapshot.hasData
                                       ? Center(
-                                          child: Text("Empty"),
+                                          child: const Text('Empty'),
                                         )
                                       : CountryStatistics(
                                           summaryList: snapshot.data ?? [],

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CountryLoading extends StatelessWidget {
-  final bool inputTextLoading;
-
   CountryLoading({required this.inputTextLoading});
+
+  final bool inputTextLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class CountryLoading extends StatelessWidget {
       elevation: 1,
       child: Container(
         height: 100,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Shimmer.fromColors(
           baseColor: Colors.grey,
           highlightColor: Colors.grey,
@@ -62,7 +62,7 @@ class CountryLoading extends StatelessWidget {
       elevation: 1,
       child: Container(
         height: 105,
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         child: Shimmer.fromColors(
           baseColor: Colors.grey,
           highlightColor: Colors.grey,

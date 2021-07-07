@@ -6,7 +6,7 @@ class ErrorScreen extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text("Something went wrong"),
+          child: Text('Something went wrong'),
         ),
       ),
     );

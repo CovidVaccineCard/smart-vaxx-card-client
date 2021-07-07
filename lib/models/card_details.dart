@@ -1,15 +1,5 @@
 class CardDetails {
-  final String name;
-  final String center;
-  final String date;
-  final String dose;
-  final String location;
-  final String image;
-  final String imageName;
-  final String userId;
-  final String id;
-
-  CardDetails({
+  const CardDetails({
     required this.name,
     required this.center,
     required this.date,
@@ -20,6 +10,16 @@ class CardDetails {
     required this.userId,
     required this.id,
   });
+
+  final String name;
+  final String center;
+  final String date;
+  final String dose;
+  final String location;
+  final String image;
+  final String imageName;
+  final String userId;
+  final String id;
 
   static CardDetails fromMap(Map<String, dynamic> mapData) {
     return CardDetails(

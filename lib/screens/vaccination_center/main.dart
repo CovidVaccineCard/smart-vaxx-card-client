@@ -9,7 +9,7 @@ import 'maps.dart';
 
 class VaccinationCenterScreen extends StatelessWidget {
   final double _borderRadius = 24;
-  final centers = FirebaseFirestore.instance.collection("centers");
+  final centers = FirebaseFirestore.instance.collection('centers');
   final userId = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
@@ -91,12 +91,12 @@ class VaccinationCenterScreen extends StatelessWidget {
                                 child: Row(
                                   children: <Widget>[
                                     Expanded(
+                                      flex: 2,
                                       child: Image.asset(
                                         'images/vaccine-icon.png',
                                         height: 64,
                                         width: 64,
                                       ),
-                                      flex: 2,
                                     ),
                                     Expanded(
                                       flex: 4,
