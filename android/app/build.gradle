@@ -10,6 +10,8 @@ def keyProperties = new Properties()
 def keyPropertiesFile = rootProject.file('key.properties')
 if (keyPropertiesFile.exists()) {
     keyProperties.load(new FileInputStream(keyPropertiesFile))
+} else {
+    throw new GradleException("No key.properties file")
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
@@ -50,10 +52,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias keyProperties['keyAlias']
-            keyPassword keyProperties['keyPassword']
-            storeFile file(keyProperties['storeFile'])
-            storePassword keyProperties['storePassword']
+            keyAlias keyProperties.getProperty('keyAlias')
+            keyPassword keyProperties.getProperty('keyPassword')
+            storeFile file(keyProperties.getProperty('storeFile'))
+            storePassword keyProperties.getProperty('storePassword')
         }
     }
 
