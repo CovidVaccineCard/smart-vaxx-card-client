@@ -7,7 +7,7 @@ class AccountScreen extends StatelessWidget {
       children: [
         ListTile(
           leading: Icon(Icons.logout_outlined),
-          title: Text('Logout'),
+          title: const Text('Logout'),
           onTap: () async {
             await FirebaseAuth.instance.signOut();
             await Navigator.popAndPushNamed(context, '/auth');
@@ -15,8 +15,8 @@ class AccountScreen extends StatelessWidget {
         ),
         ListTile(
           leading: Icon(Icons.help_sharp),
-          title: Text('Help'),
-          subtitle: Text('Contact:978XXXX989'),
+          title: const Text('Help'),
+          subtitle: const Text('Contact:978XXXX989'),
         )
       ],
     );
@@ -28,7 +28,7 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
-        title: Text('Account'),
+        title: const Text('Account'),
       ),
       body: getListView(context),
     );
