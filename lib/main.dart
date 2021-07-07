@@ -22,7 +22,6 @@ class SmartVaxxCardApp extends StatelessWidget {
         if (snapshot.hasError) {
           return ErrorScreen();
         }
-
         if (snapshot.hasData) {
           return MaterialApp(
             supportedLocales: [Locale('en')],
