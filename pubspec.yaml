@@ -28,6 +28,8 @@ dependencies:
     google_maps_flutter: ^2.0.6
     json_annotation: ^4.0.1
     country_code_picker: ^2.0.2
+    location: ^4.3.0
+    provider: ^5.0.0
 
 dev_dependencies:
     flutter_test:

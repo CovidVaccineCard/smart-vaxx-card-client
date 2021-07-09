@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:smart_vaxx_card_client/constants.dart';
 import 'package:smart_vaxx_card_client/screens/account/main.dart';
 import 'package:smart_vaxx_card_client/screens/home/main.dart';
@@ -7,6 +8,8 @@ import 'package:smart_vaxx_card_client/screens/info/loading.dart';
 import 'package:smart_vaxx_card_client/screens/upload_form/main.dart';
 import 'package:smart_vaxx_card_client/screens/vaccination_center/main.dart';
 import 'package:smart_vaxx_card_client/screens/vaxx_cards/main.dart';
+
+import 'location_notifier.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -16,6 +19,44 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selected = 0;
   List<Widget>? _widgetOptions;
+
+  Future<void> requestLocation() async {
+    var location = Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        LocationNotifier.of(context).status = LocationStatus.NO_LOCATION;
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        LocationNotifier.of(context).status = LocationStatus.NO_PERMISSION;
+        return;
+      }
+    }
+    LocationNotifier.of(context).status = LocationStatus.CHECKING;
+    var data = await location.getLocation();
+    LocationNotifier.of(context).data = data;
+    debugPrint('location: ${data.latitude}, ${data.longitude}');
+    LocationNotifier.of(context).status = LocationStatus.SUCCESS;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (checkLoggedIn()) {
+      requestLocation();
+    }
+  }
 
   List<Widget> getWidgets() {
     var widgetOptions = _widgetOptions ??

@@ -1,6 +1,8 @@
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:smart_vaxx_card_client/screens/main/location_notifier.dart';
 import 'constants.dart';
 import 'screens/auth/main.dart';
 import 'screens/main/main.dart';
@@ -38,7 +40,10 @@ class SmartVaxxCardApp extends StatelessWidget {
             ),
             initialRoute: '/',
             routes: {
-              '/': (ctx) => MainScreen(),
+              '/': (ctx) => ChangeNotifierProvider(
+                    create: (_) => LocationNotifier(),
+                    child: MainScreen(),
+                  ),
               '/auth': (ctx) => AuthScreen(),
             },
           );
