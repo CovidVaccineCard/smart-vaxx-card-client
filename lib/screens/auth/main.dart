@@ -1,112 +1,63 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_vaxx_card_client/anim/fade_animation.dart';
 import 'package:smart_vaxx_card_client/constants.dart';
-import 'login_screen.dart';
-import 'otp_screen.dart';
 import 'walk_through.dart';
 import 'package:smart_vaxx_card_client/screens/info/loading.dart';
 
 class AuthScreen extends StatefulWidget {
-  final phNoController = TextEditingController();
-  final otpController = TextEditingController();
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  late AuthState _authState;
-  late LoginState _loginState;
-  String _verificationId = '';
-  String _dialCode = '+91';
-
-  @override
-  void initState() {
-    _authState = AuthState.WALKTHROUGH;
-    _loginState = LoginState.IDLE;
-    super.initState();
-  }
-
   bool checkLoggedIn() {
     var user = FirebaseAuth.instance.currentUser;
     return user != null;
   }
 
-  Widget _buildScreen(AuthState state) {
-    switch (state) {
-      case AuthState.WALKTHROUGH:
-        return WalkThrough(nextHandler: () {
-          setState(() {
-            _authState = AuthState.LOGIN;
-          });
-        });
-      case AuthState.LOGIN:
-        return LoginScreen(
-          phNoController: widget.phNoController,
-          dialCode: _dialCode,
-          dialCodeHandler: (String dialCode) {
-            setState(() {
-              _dialCode = dialCode;
-            });
-          },
-          loginState: _loginState,
-          loginHandler: (String data) {
-            setState(() {
-              _loginState = LoginState.PENDING;
-            });
-            debugPrint(_dialCode + data);
-            FirebaseAuth.instance.verifyPhoneNumber(
-              phoneNumber: _dialCode + data,
-              verificationFailed: (e) {
-                setState(() {
-                  _loginState = LoginState.FAILED;
-                });
-              },
-              codeSent: (id, token) {
-                setState(() {
-                  _authState = AuthState.OTP;
-                  _verificationId = id;
-                });
-              },
-              codeAutoRetrievalTimeout: (v) {},
-              verificationCompleted: (c) {},
-            );
-          },
-        );
-      case AuthState.OTP:
-        return OTP(
-            otpController: widget.otpController,
-            loginState: _loginState,
-            otpHandler: (String data) {
-              if (_verificationId.trim().isNotEmpty) {
-                FirebaseAuth.instance
-                    .signInWithCredential(
-                      PhoneAuthProvider.credential(
-                          verificationId: _verificationId, smsCode: data),
-                    )
-                    .then((value) => {
-                          setState(() {
-                            _loginState = LoginState.SUCCESS;
-                          })
-                        })
-                    .catchError((e) {
-                  setState(() {
-                    _loginState = LoginState.FAILED;
-                  });
-                });
-              }
-            });
+  @override
+  void initState() {
+    super.initState();
+    if (checkLoggedIn()) Navigator.popAndPushNamed(context, '/');
+  }
+
+  Future<bool> signinWithGoogle() async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      final googleAuth = await googleUser!.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      var userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      var doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      if (doc.exists) {
+        await FirebaseAuth.instance.signOut();
+        await GoogleSignIn().disconnect();
+        final snackBar =
+            SnackBar(content: Text('Login unsuccesful: Restricted access'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return false;
+      }
+      return true;
+    } catch (err) {
+      debugPrint(err.toString());
+      final snackBar = SnackBar(content: Text('Login failed'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (checkLoggedIn()) {
-        Navigator.popAndPushNamed(context, '/');
-      }
-    });
     if (checkLoggedIn()) return LoadingScreen();
     return Scaffold(
       backgroundColor: Color.fromRGBO(3, 9, 23, 1),
@@ -159,7 +110,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
             ),
-            _buildScreen(_authState),
+            WalkThrough(nextHandler: signinWithGoogle),
           ],
         ),
       ),

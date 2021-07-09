@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AccountScreen extends StatelessWidget {
   Widget getListView(BuildContext context) {
@@ -10,6 +11,7 @@ class AccountScreen extends StatelessWidget {
           title: const Text('Logout'),
           onTap: () async {
             await FirebaseAuth.instance.signOut();
+            await GoogleSignIn().disconnect();
             await Navigator.popAndPushNamed(context, '/auth');
           },
         ),
