@@ -2,6 +2,7 @@ import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_vaxx_card_client/screens/link_card/main.dart';
 import 'package:smart_vaxx_card_client/screens/main/location_notifier.dart';
 import 'constants.dart';
 import 'screens/auth/main.dart';
@@ -45,6 +46,7 @@ class SmartVaxxCardApp extends StatelessWidget {
                     child: MainScreen(),
                   ),
               '/auth': (ctx) => AuthScreen(),
+              LinkCardScreen.routeName: (ctx) => LinkCardScreen(),
             },
           );
         }

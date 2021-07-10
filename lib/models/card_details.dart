@@ -9,6 +9,7 @@ class CardDetails {
     required this.imageName,
     required this.userId,
     required this.id,
+    this.link,
   });
 
   final String name;
@@ -20,6 +21,7 @@ class CardDetails {
   final String imageName;
   final String userId;
   final String id;
+  final String? link;
 
   static CardDetails fromMap(Map<String, dynamic> mapData) {
     return CardDetails(
@@ -32,6 +34,7 @@ class CardDetails {
       location: mapData['location'],
       image: mapData['image'],
       imageName: mapData['imageName'],
+      link: mapData['link'],
     );
   }
 
@@ -46,6 +49,7 @@ class CardDetails {
       'location': location,
       'image': image,
       'imageName': imageName,
+      'link': link,
     };
   }
 }

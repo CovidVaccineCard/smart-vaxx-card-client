@@ -1,16 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:smart_vaxx_card_client/models/card_details.dart';
 import 'package:smart_vaxx_card_client/screens/view_card/view_image.dart';
 
 class ViewCardScreen extends StatelessWidget {
-  ViewCardScreen({required this.cardDetails});
+  ViewCardScreen({required this.cardDetails, this.fromLink = false});
 
   final CardDetails cardDetails;
   final cards = FirebaseFirestore.instance.collection('cards');
   final storage = FirebaseStorage.instance;
+  final bool fromLink;
   final height = 200.0, width = 300.0;
+
+  Future<String> createShortLink() async {
+    final parameters = DynamicLinkParameters(
+      uriPrefix: 'https://vaxxcard.page.link',
+      link: Uri.parse('https://vaxxcard.page.link/?cardId=${cardDetails.id}'),
+      androidParameters: AndroidParameters(
+        packageName: 'com.covid.vaxxcard.smart_vaxx_card_client',
+      ),
+      socialMetaTagParameters: SocialMetaTagParameters(
+        title: 'Smart Vaxx Card',
+        description: 'Take a look, this is my vaccination card',
+      ),
+    );
+
+    final shortUri = await parameters.buildShortLink();
+    return shortUri.shortUrl.toString();
+  }
 
   Widget _buildDetails(String label, String value) {
     return Padding(
@@ -86,25 +106,46 @@ class ViewCardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () async {
-              await cards.doc(cardDetails.id).delete();
-              await storage
-                  .ref('cards/${cardDetails.userId}/${cardDetails.imageName}')
-                  .delete();
-              Navigator.pop(context);
-            },
-          ),
-        ],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.close),
-        ),
+        actions: (!fromLink)
+            ? [
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () async {
+                    await cards.doc(cardDetails.id).delete();
+                    await storage
+                        .ref(
+                            'cards/${cardDetails.userId}/${cardDetails.imageName}')
+                        .delete();
+                    Navigator.pop(context);
+                  },
+                ),
+              ]
+            : null,
+        leading: fromLink
+            ? null
+            : IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.close),
+              ),
         title: const Text('View card'),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          final link = cardDetails.link;
+          if (link != null) {
+            await Share.share(link);
+          } else {
+            final shortUrl = await createShortLink();
+            await cards.doc(cardDetails.id).update({
+              'link': shortUrl,
+            });
+            await Share.share(shortUrl);
+          }
+        },
+        label: Text('Share'),
+        icon: Icon(Icons.share),
       ),
       body: SingleChildScrollView(
         child: Container(

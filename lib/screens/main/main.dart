@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:smart_vaxx_card_client/constants.dart';
 import 'package:smart_vaxx_card_client/screens/account/main.dart';
 import 'package:smart_vaxx_card_client/screens/home/main.dart';
 import 'package:smart_vaxx_card_client/screens/info/loading.dart';
+import 'package:smart_vaxx_card_client/screens/link_card/arguments.dart';
+import 'package:smart_vaxx_card_client/screens/link_card/main.dart';
 import 'package:smart_vaxx_card_client/screens/upload_form/main.dart';
 import 'package:smart_vaxx_card_client/screens/vaccination_center/main.dart';
 import 'package:smart_vaxx_card_client/screens/vaxx_cards/main.dart';
@@ -19,6 +22,56 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selected = 0;
   List<Widget>? _widgetOptions;
+  bool isDeepLink = true;
+
+  Future<void> initDynamicLinks() async {
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+      final deepLink = dynamicLink?.link;
+
+      if (deepLink != null) {
+        final queryParams = deepLink.queryParameters;
+        if (queryParams.isNotEmpty) {
+          final cardId = queryParams['cardId'];
+          if (cardId != null) {
+            setState(() {
+              isDeepLink = true;
+            });
+            await Navigator.popAndPushNamed(context, LinkCardScreen.routeName,
+                arguments: LinkCardScreenArguments(cardId));
+          }
+        }
+      } else {
+        setState(() {
+          isDeepLink = false;
+        });
+      }
+    }, onError: (OnLinkErrorException e) async {
+      print('onLinkError');
+      print(e.message);
+    });
+
+    final data = await FirebaseDynamicLinks.instance.getInitialLink();
+    final deepLink = data?.link;
+
+    if (deepLink != null) {
+      final queryParams = deepLink.queryParameters;
+      if (queryParams.isNotEmpty) {
+        final cardId = queryParams['cardId'];
+        if (cardId != null) {
+          setState(() {
+            isDeepLink = true;
+          });
+          await Navigator.popAndPushNamed(context, LinkCardScreen.routeName,
+              arguments: LinkCardScreenArguments(cardId));
+        }
+      }
+    } else {
+      setState(() {
+        isDeepLink = false;
+      });
+    }
+  }
 
   Future<void> requestLocation() async {
     var location = Location();
@@ -50,12 +103,17 @@ class _MainScreenState extends State<MainScreen> {
     LocationNotifier.of(context).status = LocationStatus.SUCCESS;
   }
 
+  void init() async {
+    await initDynamicLinks();
+    if (checkLoggedIn() && !isDeepLink) {
+      await requestLocation();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    if (checkLoggedIn()) {
-      requestLocation();
-    }
+    init();
   }
 
   List<Widget> getWidgets() {
@@ -85,11 +143,11 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (!checkLoggedIn()) {
+      if (!checkLoggedIn() && !isDeepLink) {
         Navigator.popAndPushNamed(context, '/auth');
       }
     });
-    return !checkLoggedIn()
+    return !checkLoggedIn() || isDeepLink
         ? LoadingScreen()
         : Scaffold(
             body: Center(
