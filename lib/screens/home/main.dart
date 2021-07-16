@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         brightness: Brightness.dark,
         elevation: 0,
         title: Text(
-          'COVID-19 Tracker Live Data',
+          'Smart Vaxx Card',
         ),
         centerTitle: true,
       ),

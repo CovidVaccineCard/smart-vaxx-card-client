@@ -35,6 +35,9 @@ class UploadFormScreenState extends State<UploadFormScreen> {
   late UploadState _uploadState;
   CardDetails? _cardDetails;
 
+  var vaccineType = ['Pfizer', 'Moderna', 'J&J'];
+  String? _currentValueSelected;
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +75,37 @@ class UploadFormScreenState extends State<UploadFormScreen> {
       onPressed: () {},
     ),
   );
+
+  Widget _buildVaccineType() {
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color: Colors.transparent,
+            border: Border.all(
+              width: 1,
+              color: Colors.grey,
+            )),
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 5),
+        margin: EdgeInsets.symmetric(vertical: 4.0),
+        child: DropdownButton<String>(
+          hint: Text('Vaccine Type'),
+          icon: Icon(Icons.arrow_drop_down),
+          underline: SizedBox(),
+          items: vaccineType.map((String dropMenu) {
+            return DropdownMenuItem<String>(
+              value: dropMenu,
+              child: Text(dropMenu),
+            );
+          }).toList(),
+          onChanged: (newValueSelected) {
+            setState(() {
+              _currentValueSelected = newValueSelected!;
+            });
+          },
+          value: _currentValueSelected,
+        ));
+  }
 
   Widget _buildUpload() {
     return Center(
@@ -175,6 +209,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                 _buildDose(),
                 _buildlocation(),
                 _buildDate(),
+                _buildVaccineType(),
                 SizedBox(height: 20),
                 _buildUpload(),
                 SizedBox(height: 30),
@@ -182,7 +217,8 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                     ? CircularProgressIndicator()
                     : ElevatedButton(
                         onPressed: () async {
-                          if (validateFields()) {
+                          if (validateFields() &&
+                              _currentValueSelected != null) {
                             _formKey.currentState!.save();
                             setState(() {
                               _uploadState = UploadState.UPLOADING;
@@ -193,6 +229,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                             final date = _date;
                             final dose = _doseController.text;
                             final location = _locationController.text;
+                            final type = _currentValueSelected;
                             final dateTime =
                                 '${DateTime.now().millisecondsSinceEpoch}';
                             final randomNum = '${Random().nextInt(200)}';
@@ -224,6 +261,7 @@ class UploadFormScreenState extends State<UploadFormScreen> {
                                 image: image,
                                 userId: uId,
                                 id: id,
+                                type: type,
                               );
                               await widget.cards
                                   .doc(id)

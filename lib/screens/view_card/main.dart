@@ -160,6 +160,7 @@ class ViewCardScreen extends StatelessWidget {
               _buildDetails('Dose: ', cardDetails.dose),
               _buildDetails('Location: ', cardDetails.location),
               _buildDetails('Date: ', cardDetails.date),
+              if(cardDetails.type != null) _buildDetails('Vaccine type: ', cardDetails.type!)
             ],
           ),
         ),
