@@ -18,6 +18,16 @@ class ViewImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        brightness: Brightness.dark,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
+        title: const Text('Share Image'),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           var appDocDir = await getApplicationDocumentsDirectory();
